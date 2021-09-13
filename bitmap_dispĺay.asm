@@ -9,11 +9,15 @@ input_x1: .string "digite X1\n"
 input_y1: .string "digite Y1\n"
 testif: .string "\nIIFFF\n"
 else: .string "\nELSE\n"
-testloop: .string "LOOP\n"
+testloop: .string "\nLOOP\n"
 testalgoritimo: .string "ALGORITIMO\n"
 testa5: .string "\nD==\n"
 testx0: .string "\nx0 ==\n"
 testx1: .string "\nx1 ==\n"
+testorg: .string "\ORG ==\n"
+testa4: .string "\nA4 ========\n"
+line: .string "\n=======================\n"
+breakline: .string "\n"
 
 .text 
     #s0 = x0
@@ -76,12 +80,6 @@ testx1: .string "\nx1 ==\n"
     
     
 algoritimo:
-####################
-la a2, testalgoritimo
-    mv a0, a2
-    li a7,4
-    ecall
-#####################
 sub a6 , s2, s0 #dx = x1 - x0
 sub a7 , s3, s1 #dy = y1 - y0
 addi t2, zero, 2
@@ -98,54 +96,6 @@ addi a6, s0, 1 #saving x0 + 1
 j loop
 
 loop:
-###### DEBUG #################
-la t0, testloop
-mv a0, t0
-li a7,4
-ecall
-##########################
-
-###### DEBUG #################
-la t0, testa5
-mv a0, t0
-li a7,4
-ecall
-add a0, zero, a5
-li a7,1
-ecall
-##########################
-
-###### DEBUG #################
-la t0, testa5
-mv a0, t0
-li a7,4
-ecall
-add a0, zero, a5
-li a7,1
-ecall
-##########################
-
-###### DEBUG #################
-la t0, testx0
-mv a0, t0
-li a7,4
-ecall
-add a0, zero, a6
-li a7,1
-ecall
-##########################
-
-###### DEBUG #################
-la t0, testx1
-mv a0, t0
-li a7,4
-ecall
-add a0, zero, s4
-li a7,1
-ecall
-##########################
-
-	
 	bge a6, s2, end #terminar se x0+1 == x1
 	bne a5, zero, if #goes to if
 	
@@ -155,12 +105,6 @@ ecall
 	mul t1, a7, t0
 	add a5, a5, t1
 	addi a6, a6, 1
-#######DEBUG##########
-la t0, else
-mv a0, t0
-li a7,4
-ecall
-##################
 	j loop
 	
 
@@ -169,29 +113,25 @@ ponto:
  #jal x1,getaddres
  addi a3, zero, 4
  mul t1, a1, a3 #4*x
- mul t2, a2, s5 #Y*dx
+ mul t2, a2, s5 #Y*dx 
  mul t3, a3, t2 #4*(y*dx)
- add t4, t1, t3 #4*x + 4*(y*dx)
+ add t4, t1, t3 #4*x + 4*(y*dx) 
  add a4, t4, s4 #4*x + 4*(y*dx) + offset
- lw a4, color
- jalr x0, 0(x1)
-
-#getaddres:
- #addi a3, zero, 4
- #mul t1, a1, a3 #4*x
- #mul t2, a2, s5 #Y*dx
- #mul t3, a3, t2 #4*(y*dx)
- #add t4, t1, t3 #4*x + 4*(y*dx)
- #add a4, t4, s4 #4*x + 4*(y*dx) + offset
- #jalr x0, 0(x1)
- 
-if:
-#########DEBUG#########
-la t0, testif
+ ###### DEBUG #################
+la t0, testa4
 mv a0, t0
 li a7,4
 ecall
-#################
+add a0, zero, a4
+li a7,1
+ecall
+##########################
+
+ lw t0, color
+ sw t0, 0(a4)
+ jalr x0, 0(x1)
+ 
+if:
 addi a3, a3, 1 #y = y+1
 jal x1, ponto
 add a2,zero, a3 #passing parameters y
@@ -204,11 +144,62 @@ addi a6, a6, 1
 j loop
 
 end:
-	mv a0, x9
-    	li a7, 1
-    	ecall
+	jal x1, ponto
 	li a7, 10
 	ecall
+	
+ 
+ ###### DEBUG #################
+#la t0, testloop
+#mv a0, t0
+#li a7,4
+#ecall
+##########################
+
+###### DEBUG #################
+#la t0, testa5
+#mv a0, t0
+#li a7,4
+#ecall
+#add a0, zero, a5
+#li a7,1
+#ecall
+##########################
+
+
+###### DEBUG #################
+#la t0, testx0
+#mv a0, t0
+#li a7,4
+#ecall
+#add a0, zero, a6
+#li a7,1
+#ecall
+##########################
+
+###### DEBUG #################
+#la t0, testx1
+#mv a0, t0
+#li a7,4
+#ecall
+#add a0, zero, s2
+#li a7,1
+#ecall
+##########################
+
+#########DEBUG#########
+#la t0, testif
+#mv a0, t0
+#li a7,4
+#ecall
+#################
+
+####################
+#la a2, testalgoritimo
+    #mv a0, a2
+    #li a7,4
+    #ecall
+#####################
  
  
  
