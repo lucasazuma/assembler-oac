@@ -92,11 +92,11 @@ add a2, zero, s1
 jal x1, ponto
 
 add a3, zero, s1 # y = y0
-addi a6, s0, 1 #saving x0 + 1
+addi a1, a1, 1 #saving x0 + 1
 j loop
 
 loop:
-	bge a6, s2, end #terminar se x0+1 == x1
+	bge a1, s2, end #terminar se x0+1 == x1
 	bne a5, zero, if #goes to if
 	
 	#else
@@ -104,7 +104,7 @@ loop:
 	addi t0, zero, 2
 	mul t1, a7, t0
 	add a5, a5, t1
-	addi a6, a6, 1
+	addi a1, a1, 1
 	j loop
 	
 
@@ -132,7 +132,7 @@ ecall
  jalr x0, 0(x1)
  
 if:
-addi a3, a3, 1 #y = y+1
+addi a1, a1, 1 #y = y+1
 jal x1, ponto
 add a2,zero, a3 #passing parameters y
 addi t0, zero, 2
@@ -140,7 +140,7 @@ mul t1, a6, t0 #2*dx
 mul t2, a7, t0
 sub t3, t2, t1
 add a5, a5, t3
-addi a6, a6, 1
+addi a1, a1, 1
 j loop
 
 end:
